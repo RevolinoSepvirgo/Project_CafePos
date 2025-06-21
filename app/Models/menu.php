@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Database\Seeders\CategorySeeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
-class menu extends Model
+class Menu extends Model // ← Huruf M harus kapital
 {
-     use HasFactory;
+    use HasFactory;
+
+    // Tambahkan ini untuk menghubungkan ke tabel yang di-rename
+    protected $table = 'revo_menus';
 
     protected $fillable = [
         'name',
@@ -17,9 +18,9 @@ class menu extends Model
         'price',
         'image',
     ];
-    public function category()
-{
-    return $this->belongsTo(Category::class);
-}
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

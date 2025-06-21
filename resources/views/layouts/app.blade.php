@@ -97,6 +97,10 @@
                     <i class="bi bi-cup-straw"></i> Menu
                 </a>
             </li>
+            <li>
+                <a href="{{ route('tables.index') }}" class="nav-link {{ request()->routeIs('tables.*') ? 'active' : '' }}">
+                    <i class="bi bi-table"></i> Meja
+                </a>
 
             <li>
                 <a href="{{ url('/transactions') }}" class="nav-link {{ request()->is('transactions*') ? 'active' : '' }}">
@@ -136,4 +140,3 @@
 </script>
 </body>
 </html>
- 

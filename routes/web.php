@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TableController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -30,6 +31,15 @@ Route::middleware('auth')->get('/dashboard', function () {
 Route::resource('menus', MenuController::class);
 
 Route::get('/menu', [MenuController::class, 'showPublicMenu'])->name('menus.public');
+
+
+Route::resource('tables', TableController::class);
+Route::patch('/tables/{id}/change-status', [TableController::class, 'changeStatus'])->name('tables.changeStatus');
+Route::get('/meja-publik', [App\Http\Controllers\TableController::class, 'publicIndex'])->name('tables.public');
+
+
+
+
 
 
 
