@@ -101,9 +101,13 @@
                 <a href="{{ route('tables.index') }}" class="nav-link {{ request()->routeIs('tables.*') ? 'active' : '' }}">
                     <i class="bi bi-table"></i> Meja
                 </a>
+            <li>
+                <a href="{{ route('orders.index') }}" class="nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
+                    <i class="bi bi-cart"></i> Pesanan
+                </a>
 
             <li>
-                <a href="{{ url('/transactions') }}" class="nav-link {{ request()->is('transactions*') ? 'active' : '' }}">
+                <a href="{{ route('orders.create') }}" class="nav-link {{ request()->is('transactions*') ? 'active' : '' }}">
                     <i class="bi bi-cash-stack"></i> Transaksi
                 </a>
             </li>
