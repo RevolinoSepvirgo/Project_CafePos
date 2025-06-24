@@ -15,8 +15,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::with('category')->get();
-        return view('menus.index', compact('menus'));
+       $categories = \App\Models\Category::with('menus')->get();
+        return view('menus.index', compact('categories'));
     }
 
     /**

@@ -17,8 +17,17 @@ class OrderController extends Controller
     // Tampilkan semua pesanan (khusus kasir)
     public function index()
     {
-        $orders = \App\Models\Order::with('table', 'user', 'items.menu')->orderBy('created_at', 'desc')->get();
-        return view('orders.index', compact('orders'));
+       $ordersMenunggu = \App\Models\Order::with('table', 'user', 'items.menu')
+        ->where('status', 'menunggu')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    $ordersDibayar = \App\Models\Order::with('table', 'user', 'items.menu')
+        ->where('status', 'dibayar') 
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('orders.index', compact('ordersMenunggu', 'ordersDibayar'));
     }
 
     // Form buat pesanan baru (pelayan/kasir)

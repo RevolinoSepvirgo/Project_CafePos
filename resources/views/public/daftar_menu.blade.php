@@ -1,89 +1,87 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Menu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="icon" type="image/png" href="{{ asset('aset/logo/logo db.png') }}" sizes="32x32" />
-  <link rel="icon" type="image/png" href="{{ asset('aset/logo/logo db.png') }}" sizes="16x16" />
-  <style>
-    body {
-      background-color: #f7f7f9;
-      font-family: 'Segoe UI', sans-serif;
-    }
+@extends('layouts.menu')
 
-    .menu-card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-      margin-bottom: 16px;
-      transition: all 0.2s ease;
-    }
+@section('title', 'Daftar Menu D.Brownies')
 
-    .menu-card:hover {
-      transform: scale(1.01);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
+@section('style')
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
 
-    .menu-img {
-      width: 90px;
-      height: 90px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-right: 16px;
-    }
+  .category-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 40px 0 20px;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 6px;
+  }
 
-    .btn-add {
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      font-weight: bold;
-      padding: 0;
-    }
+  .menu-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  }
 
-    .menu-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
+  .menu-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
 
-    .menu-desc {
-      font-size: 0.9rem;
-      color: #666;
-    }
+  .menu-img-container {
+    background-color: #ffffff;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
 
-    .menu-price {
-      color: #dc3545;
-      font-weight: 600;
-      margin-top: 6px;
-    }
+  .menu-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding: 8px;
+  }
 
-    .category-header {
-      font-weight: bold;
-      font-size: 1.2rem;
-      margin: 40px 0 20px;
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 6px;
-    }
-  </style>
-</head>
-<body>
+  .menu-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
 
+  .menu-category {
+    font-size: 0.85rem;
+    color: #777;
+  }
+
+  .menu-price {
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 8px;
+    font-size: 0.95rem;
+  }
+</style>
+@endsection
+
+@section('content')
 <div class="container py-4">
-    <div class="text-center mb-4">
-        <img src="{{ asset('aset/logo/logo db.png') }}" alt="Logo" style="width: 60px;">
-        <h2 class="fw-bold mt
-  <h3 class="fw-bold mb-4 text-center">🍛 Daftar Menu D'Brownies</h3>
 
-  <!-- Filter & Search -->
+  <!-- Header -->
+  <div class="text-center mb-4">
+    <h3 class="fw-bold mt-2">🍰 Daftar Menu D'Brownies</h3>
+    <p class="text-muted">Lihat dan pilih menu favorit Anda!</p>
+  </div>
+
+  <!-- Search & Filter -->
   <div class="row mb-4">
     <div class="col-md-6 mb-2">
       <input type="text" id="searchInput" class="form-control" placeholder="🔍 Cari menu..." onkeyup="filterMenu()">
     </div>
     <div class="col-md-6 mb-2">
       <select id="categoryFilter" class="form-select" onchange="filterMenu()">
-        <option value="all">📂 Semua Kategori</option>
+        <option value="all">🍰 Semua Kategori</option>
         @foreach ($categories as $kategori)
           <option value="{{ strtolower($kategori->name) }}">{{ $kategori->name }}</option>
         @endforeach
@@ -94,59 +92,54 @@
   <!-- Menu List by Category -->
   <div id="menu-list">
     @foreach ($categories as $kategori)
-      <div class="category-section" data-category="{{ strtolower($kategori->name) }}">
-        <div class="category-header">{{ $kategori->name }}</div>
-
-        @foreach ($menus->where('category_id', $kategori->id) as $menu)
-          <div class="menu-card d-flex" data-kategori="{{ strtolower($menu->category->name) }}">
-            <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}" class="menu-img">
-            <div class="flex-grow-1">
-              <div class="d-flex justify-content-between">
-                <div>
-                  <div class="menu-title">{{ $menu->name }}</div>
-                  <div class="menu-desc">{{ $menu->category->name }}</div>
+      <div class="category-section mb-3" data-category="{{ strtolower($kategori->name) }}">
+        <div class="category-title">{{ $kategori->name }}</div>
+        <div class="row g-3">
+          @foreach ($menus->where('category_id', $kategori->id) as $menu)
+            <div class="col-6 col-sm-4 col-md-3 col-lg-3">
+              <div class="menu-card">
+                <div class="menu-img-container">
+                  <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}" class="menu-img">
                 </div>
-                <button class="btn btn-success btn-add">+</button>
+                <div class="p-3 text-center">
+                  <div class="menu-title">{{ $menu->name }}</div>
+                  <div class="menu-category">{{ $menu->category->name }}</div>
+                  <div class="menu-price">Rp{{ number_format($menu->price, 0, ',', '.') }}</div>
+                </div>
               </div>
-              <div class="menu-price">Rp{{ number_format($menu->price, 0, ',', '.') }}</div>
             </div>
-          </div>
-        @endforeach
-
+          @endforeach
+        </div>
       </div>
     @endforeach
   </div>
 </div>
+@endsection
 
-<!-- Filter Script -->
+@section('scripts')
 <script>
   function filterMenu() {
     const searchInput = document.getElementById("searchInput").value.toLowerCase();
     const selectedCategory = document.getElementById("categoryFilter").value;
-    const menuCards = document.querySelectorAll(".menu-card");
     const categorySections = document.querySelectorAll(".category-section");
 
     categorySections.forEach(section => {
-      let visibleInSection = false;
+      let visible = false;
       const cards = section.querySelectorAll(".menu-card");
 
       cards.forEach(card => {
-        const kategori = card.getAttribute("data-kategori");
         const title = card.querySelector(".menu-title").textContent.toLowerCase();
-        const desc = card.querySelector(".menu-desc").textContent.toLowerCase();
-        const matchSearch = title.includes(searchInput) || desc.includes(searchInput);
-        const matchKategori = selectedCategory === "all" || selectedCategory === kategori;
+        const category = section.getAttribute("data-category");
+        const matchSearch = title.includes(searchInput);
+        const matchCategory = selectedCategory === "all" || selectedCategory === category;
+        const show = matchSearch && matchCategory;
 
-        const show = matchSearch && matchKategori;
-        card.style.display = show ? "flex" : "none";
-
-        if (show) visibleInSection = true;
+        card.parentElement.style.display = show ? "block" : "none";
+        if (show) visible = true;
       });
 
-      section.style.display = visibleInSection ? "block" : "none";
+      section.style.display = visible ? "block" : "none";
     });
   }
 </script>
-
-</body>
-</html>
+@endsection
