@@ -6,6 +6,8 @@ use App\Models\Menu;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class MenuController extends Controller
@@ -15,8 +17,10 @@ class MenuController extends Controller
      */
     public function index()
     {
-       $categories = \App\Models\Category::with('menus')->get();
-        return view('menus.index', compact('categories'));
+
+
+    $categories = Category::with('menus')->get();
+    return view('menus.index', compact('categories'));
     }
 
     /**

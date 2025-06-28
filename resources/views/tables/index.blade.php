@@ -30,7 +30,7 @@
                             <td>
                                 <form action="{{ route('tables.changeStatus', $table->id) }}" method="POST" class="d-flex align-items-center">
                                     @csrf
-                                    @method('PATCH')
+                                    @method('PUT')
                                     <select name="status" onchange="this.form.submit()" class="form-select form-select-sm me-2" style="width: 110px;">
                                         <option value="kosong" {{ $table->status == 'kosong' ? 'selected' : '' }}>Kosong</option>
                                         <option value="terisi" {{ $table->status == 'terisi' ? 'selected' : '' }}>Terisi</option>
