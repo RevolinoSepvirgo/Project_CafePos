@@ -23,7 +23,7 @@ class OrderController extends Controller
         ->get();
 
     $ordersDibayar = \App\Models\Order::with('table', 'user', 'items.menu')
-        ->where('status', 'dibayar') 
+        ->where('status', 'dibayar')
         ->orderBy('created_at', 'desc')
         ->get();
 
@@ -83,38 +83,80 @@ class OrderController extends Controller
     return view('orders.show', compact('order'));
 }
 
+
     // Edit pesanan (opsional)
-    public function edit($id)
-    {
-        $order = Order::with('items')->findOrFail($id);
-        $menus = Menu::all();
-        return view('orders.edit', compact('order', 'menus'));
+  public function edit($id)
+{
+    $order = Order::with('items.menu')->findOrFail($id);
+    $menus = Menu::all();
+
+   $tables = Table::where('status', 'kosong')
+        ->orWhere('id', $order->table_id)
+        ->get();
+
+    return view('orders.edit', compact('order', 'menus', 'tables'));
+}
+
+
+public function update(Request $request, $id)
+{
+    $order = Order::with('items')->findOrFail($id);
+
+    $request->validate([
+        'table_id' => 'required|exists:revo_tables,id',
+        'customer_name' => 'required|string|max:100',
+        'menu' => 'required|array|min:1',
+        'menu.*' => 'nullable|integer|min:0'
+    ]);
+
+     $oldTableId = $order->table_id;
+
+    // Update data order
+    $order->update([
+        'table_id' => $request->table_id,
+        'customer_name' => $request->customer_name,
+    ]);
+    
+ // Jika meja berubah, update status meja lama & baru
+    if ($oldTableId != $request->table_id) {
+        // Meja lama jadi kosong
+        \App\Models\Table::where('id', $oldTableId)->update(['status' => 'kosong']);
+        // Meja baru jadi terisi
+        \App\Models\Table::where('id', $request->table_id)->update(['status' => 'terisi']);
     }
 
-    // Update pesanan (opsional)
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'items' => 'required|array|min:1',
-            'items.*.menu_id' => 'required|exists:revo_menus,id',
-            'items.*.quantity' => 'required|integer|min:1',
-        ]);
+    // Update atau tambah item baru
+    foreach ($request->menu as $menu_id => $qty) {
+        $menu = Menu::find($menu_id);
+        if (!$menu) continue;
 
-        $order = Order::findOrFail($id);
-        $order->items()->delete(); // hapus item lama
+        $existing = $order->items()->where('menu_id', $menu_id)->first();
 
-        foreach ($request->items as $item) {
-            $menu = Menu::find($item['menu_id']);
-            OrderItem::create([
-                'order_id' => $order->id,
-                'menu_id' => $menu->id,
-                'quantity' => $item['quantity'],
-                'subtotal' => $menu->price * $item['quantity'],
-            ]);
+        if ($qty > 0) {
+            if ($existing) {
+                $existing->update([
+                    'quantity' => $qty,
+                    'subtotal' => $menu->price * $qty,
+                ]);
+            } else {
+                $order->items()->create([
+                    'menu_id' => $menu_id,
+                    'quantity' => $qty,
+                    'subtotal' => $menu->price * $qty,
+                ]);
+            }
+        } else {
+            if ($existing) {
+                $existing->delete(); // hapus item dengan qty 0
+            }
         }
-
-        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
     }
+
+    return redirect()->route('orders.show', $order->id)
+        ->with('success', 'Pesanan berhasil diperbarui.');
+}
+
+
 
     // Hapus pesanan (jika dibatalkan)
     public function destroy($id)
@@ -128,32 +170,9 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dihapus.');
     }
-    public function pay(Request $request, Order $order)
-{
-    $request->validate([
-        'method' => 'required|string',
-        'amount' => 'required|integer',
-    ]);
 
-    $total = $order->items->sum('subtotal');
 
-    if ($request->amount < $total) {
-        return back()->with('error', 'Jumlah bayar kurang dari total!');
-    }
 
-    // Simpan pembayaran
-    Payment::create([
-        'order_id' => $order->id,
-        'method' => $request->method,
-        'amount' => $request->amount,
-    ]);
 
-    // Update status order dan meja
-    $order->update(['status' => 'dibayar']);
-    if ($order->table) {
-        $order->table->update(['status' => 'kosong']);
-    }
 
-    return redirect()->route('orders.show', $order->id)->with('success', 'Pembayaran berhasil.');
-}
 }

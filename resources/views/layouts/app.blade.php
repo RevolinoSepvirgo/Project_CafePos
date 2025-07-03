@@ -10,78 +10,70 @@
 
     <style>
         body {
-            background: #f8f9fa;
+            background: #f1f3f5;
+            margin: 0;
         }
-
         .sidebar {
-            min-height: 100vh;
-            background: #343a40;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 240px;
+            background: #22252a;
             color: #fff;
+            overflow-y: auto;
+            transition: all 0.3s;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
         }
-
         .sidebar .nav-link {
-            color: #fff;
-            transition: background 0.2s, color 0.2s;
+            color: #adb5bd;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            margin-bottom: 5px;
+            transition: all 0.2s;
         }
-
         .sidebar .nav-link.active,
         .sidebar .nav-link:hover {
-            background: #495057;
-            color: #ffc107;
+            background: #ffc107;
+            color: #22252a;
         }
-
-        .sidebar .sidebar-header {
-            background: #1f1f1f;
-            padding: 1.5rem 1rem;
+        .sidebar-header {
             text-align: center;
+            margin-bottom: 1rem;
         }
-
-        .logo-wrapper {
-            background-color: #2c3035;
-            border-radius: 12px;
-            padding: 10px 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
-        }
-
-        .logo-wrapper:hover {
-            background-color: #3a3f45;
-        }
-
-        .logo-wrapper img:first-child {
-            width: 34px;
-            height: 34px;
-            margin-right: 10px;
+        .logo-wrapper img {
             object-fit: contain;
         }
-
-        .logo-wrapper img:last-child {
-            height: 28px;
-            object-fit: contain;
+        .account-info {
+            margin-top: auto;
+            padding: 1rem;
+            background: #343a40;
+            text-align: center;
+            border-radius: 0.5rem;
         }
-
-        .sidebar .nav-link i {
-            margin-right: 8px;
+        .account-info .name {
+            font-weight: bold;
         }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                min-height: auto;
-            }
+        .account-info .role {
+            color: #ffc107;
+            text-transform: capitalize;
+        }
+        main {
+            margin-left: 240px;
+            padding: 2rem;
         }
     </style>
 </head>
 <body>
-<div class="d-flex">
-    <nav class="sidebar flex-shrink-0 p-3">
-        <!-- Sidebar Header dengan Logo & Nama -->
-        <div class="sidebar-header mb-4">
-            <div class="logo-wrapper">
-                <img src="{{ asset('aset/logo/logo db.png') }}" alt="Logo Icon">
-                <img src="{{ asset('aset/logo/desain bg.png') }}" alt="Logo Text">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-wrapper d-flex align-items-center justify-content-center">
+                <img src="{{ asset('aset/logo/logo db.png') }}" alt="Logo Icon" class="me-2" style="height: 38px;">
+                <img src="{{ asset('aset/logo/desain bg.png') }}" alt="Logo Text" style="height: 28px;">
             </div>
         </div>
 
@@ -91,7 +83,6 @@
                     <i class="bi bi-house"></i> Dashboard
                 </a>
             </li>
-
             <li>
                 <a href="{{ route('menus.index') }}" class="nav-link {{ request()->routeIs('menus.*') ? 'active' : '' }}">
                     <i class="bi bi-cup-straw"></i> Menu
@@ -101,46 +92,51 @@
                 <a href="{{ route('tables.index') }}" class="nav-link {{ request()->routeIs('tables.*') ? 'active' : '' }}">
                     <i class="bi bi-table"></i> Meja
                 </a>
+            </li>
             <li>
                 <a href="{{ route('orders.index') }}" class="nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
                     <i class="bi bi-cart"></i> Pesanan
                 </a>
-
+            </li>
             <li>
                 <a href="{{ route('orders.create') }}" class="nav-link {{ request()->is('transactions*') ? 'active' : '' }}">
                     <i class="bi bi-cash-stack"></i> Transaksi
                 </a>
             </li>
-
             <li>
                 <a href="{{ url('/users') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
                     <i class="bi bi-people"></i> Pengguna
                 </a>
             </li>
-
             <li>
                 <a href="{{ url('/logout') }}" class="nav-link">
                     <i class="bi bi-box-arrow-right"></i> Logout
                 </a>
             </li>
         </ul>
+
+        @if(auth()->check())
+            <div class="account-info">
+                <div class="name">{{ auth()->user()->name }}</div>
+                <div class="role">{{ auth()->user()->role }}</div>
+            </div>
+        @endif
     </nav>
 
-    <main class="flex-grow-1 p-4">
+    <!-- Content -->
+    <main>
         @yield('content')
     </main>
-</div>
 
-<!-- Alert auto-hide -->
-<script>
-  setTimeout(() => {
-    const alert = document.querySelector('.alert');
-    if (alert) {
-      alert.classList.remove('show');
-      alert.classList.add('fade');
-      setTimeout(() => alert.remove(), 300);
-    }
-  }, 3000);
-</script>
+    <script>
+      setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+          alert.classList.remove('show');
+          alert.classList.add('fade');
+          setTimeout(() => alert.remove(), 300);
+        }
+      }, 3000);
+    </script>
 </body>
 </html>

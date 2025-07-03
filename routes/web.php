@@ -7,6 +7,7 @@ use App\Http\Controllers\TableController;
 use App\Http\Controllers\OrderController;
 use App\Http\Middleware\RoleAdmin;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\PaymentController;
 
 // AUTH
 
@@ -53,7 +54,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::put('/tables/{table}', [TableController::class, 'update'])->name('tables.update');
     Route::delete('/tables/{table}', [TableController::class, 'destroy'])->name('tables.destroy');
     Route::get('/tables/{table}', [TableController::class, 'show'])->name('tables.show');
-    Route::put('/tables/{table}/change-status', [TableController::class, 'changeStatus'])->name('tables.changeStatus');
+
 });
 
 
@@ -67,13 +68,18 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,pelayan,kasir'])->gro
     Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
     Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+// status meja
+     Route::put('/tables/{table}/change-status', [TableController::class, 'changeStatus'])->name('tables.changeStatus');
 });
 
 
 // Order pay (hanya kasir)
 
 Route::middleware(['auth', RoleMiddleware::class . ':kasir'])->group(function () {
-    Route::post('/orders/{order}/pay', [OrderController::class, 'pay'])->name('orders.pay');
+Route::get('/orders/{id}/payment', [PaymentController::class, 'showPaymentForm'])->name('orders.payment.form');
+Route::post('/orders/{id}/pay', [PaymentController::class, 'pay'])->name('orders.pay');
+
+
 });
 
 
