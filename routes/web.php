@@ -73,9 +73,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,pelayan,kasir'])->gro
 });
 
 
-// Order pay (hanya kasir)
+// Order pay (hanya kasir,admin)
 
-Route::middleware(['auth', RoleMiddleware::class . ':kasir'])->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':kasir,admin'])->group(function () {
 Route::get('/orders/{id}/payment', [PaymentController::class, 'showPaymentForm'])->name('orders.payment.form');
 Route::post('/orders/{id}/pay', [PaymentController::class, 'pay'])->name('orders.pay');
 

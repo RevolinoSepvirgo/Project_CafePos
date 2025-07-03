@@ -4,9 +4,15 @@
 <div class="card shadow mb-4">
     <div class="card-header bg-success text-white fw-bold">
         Data Meja
+            @auth
+             @if(auth()->user()->role === 'admin')
         <a href="{{ route('tables.create') }}" class="btn btn-light btn-sm float-end">
             <i class="bi bi-plus-circle"></i> Tambah Meja
         </a>
+          @endif
+            @endauth
+
+
     </div>
 
     <div class="card-body p-0">
@@ -18,7 +24,11 @@
                         <th>Nama Meja</th>
                         <th>Kapasitas</th>
                         <th>Status</th>
+                        @auth
+                             @if(auth()->user()->role === 'admin')
                         <th class="text-center" style="width: 140px;">Aksi</th>
+                             @endif
+                            @endauth
                     </tr>
                 </thead>
                 <tbody>
@@ -49,6 +59,8 @@
                                     </span>
                                 </form>
                             </td>
+                         @auth
+                            @if(auth()->user()->role === 'admin')
                             <td class="text-center">
                                 <a href="{{ route('tables.edit', $table->id) }}" class="btn btn-warning btn-sm" title="Edit">
                                     <i class="bi bi-pencil-square"></i>
@@ -61,6 +73,10 @@
                                     </button>
                                 </form>
                             </td>
+                             @endif
+                        @endauth
+
+
                         </tr>
                     @empty
                         <tr>

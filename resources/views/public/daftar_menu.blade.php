@@ -162,39 +162,35 @@
 
 
         <!-- Filter Kategori -->
-        <div class="d-flex flex-wrap gap-2" id="category-filters">
-            <button class="btn category-btn active" data-filter="all">Semua</button>
-            @foreach ($categories as $kategori)
-                <button class="btn category-btn" data-filter="{{ strtolower($kategori->name) }}">{{ $kategori->name }}</button>
-            @endforeach
-        </div>
-    </div>
-
-
-
-  <!-- Daftar Menu -->
-  <div id="menu-list">
+<div class="d-flex flex-wrap gap-2" id="category-filters">
+    <button class="btn category-btn active" data-filter="all">Semua</button>
     @foreach ($categories as $kategori)
-      <div class="category-section mb-4" data-category="{{ strtolower($kategori->name) }}">
-        <div class="category-title">{{ $kategori->name }}</div>
-        <div class="row g-4">
-          @foreach ($menus->where('category_id', $kategori->id) as $menu)
-            <div class="col-6 col-sm-4 col-md-3">
-              <div class="menu-card h-100">
-                <div class="menu-img-container">
-                  <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}" class="menu-img">
-                </div>
-                <div class="p-3 text-center">
-                  <div class="menu-title">{{ $menu->name }}</div>
-                  <div class="menu-price">Rp{{ number_format($menu->price, 0, ',', '.') }}</div>
-                </div>
+        <button class="btn category-btn" data-filter="{{ strtolower($kategori->name) }}">{{ $kategori->name }}</button>
+    @endforeach
+</div>
+
+<!-- Daftar Menu -->
+<div id="menu-list">
+  @foreach ($categories as $kategori)
+    <div class="category-section mb-4" data-category="{{ strtolower($kategori->name) }}">
+      <div class="category-title">{{ $kategori->name }}</div>
+      <div class="row g-4">
+        @foreach ($menus->where('category_id', $kategori->id) as $menu)
+          <div class="col-6 col-sm-4 col-md-3">
+            <div class="menu-card h-100">
+              <div class="menu-img-container">
+                <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}" class="menu-img">
+              </div>
+              <div class="p-3 text-center">
+                <div class="menu-title">{{ $menu->name }}</div>
+                <div class="menu-price">Rp{{ number_format($menu->price, 0, ',', '.') }}</div>
               </div>
             </div>
-          @endforeach
-        </div>
+          </div>
+        @endforeach
       </div>
-    @endforeach
-  </div>
+    </div>
+  @endforeach
 </div>
 @endsection
 
