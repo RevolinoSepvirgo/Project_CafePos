@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Middleware\RoleAdmin;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\DashboardController;
 
 // AUTH
 
@@ -26,12 +27,7 @@ Route::get('/menu', [MenuController::class, 'showPublicMenu'])->name('menus.publ
 Route::get('/meja-publik', [TableController::class, 'publicIndex'])->name('tables.public');
 
 // DASHBOARD
-Route::middleware('auth')->get('/dashboard', function () {
-    $menuCount = \App\Models\Menu::count();
-    $tableCount = \App\Models\Table::count();
-    $orderCount = \App\Models\Order::count();
-    return view('dashboard', compact('menuCount', 'tableCount', 'orderCount'));
-})->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 
 

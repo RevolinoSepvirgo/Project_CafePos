@@ -5,6 +5,8 @@
     <title>CafePOS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" type="image/png" href="{{ asset('aset/logo/logo db.png') }}" sizes="32x32" />
     <link rel="icon" type="image/png" href="{{ asset('aset/logo/logo db.png') }}" sizes="16x16" />
 
@@ -64,6 +66,12 @@
             margin-left: 240px;
             padding: 2rem;
         }
+        account-info .bi-person-circle {
+    font-size: 1.2rem;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
     </style>
 </head>
 <body>
@@ -117,9 +125,11 @@
 
         @if(auth()->check())
             <div class="account-info">
-                <div class="name">{{ auth()->user()->name }}</div>
-                <div class="role">{{ auth()->user()->role }}</div>
-            </div>
+    <div class="name">
+        <i class="bi bi-person-circle me-1"></i> {{ auth()->user()->name }}
+    </div>
+    <div class="role">{{ auth()->user()->role }}</div>
+</div>
         @endif
     </nav>
 
@@ -138,5 +148,6 @@
         }
       }, 3000);
     </script>
+        @stack('scripts')
 </body>
 </html>

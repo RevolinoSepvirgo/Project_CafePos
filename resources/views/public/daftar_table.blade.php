@@ -5,7 +5,7 @@
 @section('content')
 <div class="container py-4">
     <div class="text-center mb-4">
-        <h2 class="fw-bold text-danger">Meja Café D'Brownies</h2>
+        <h2 class="fw-bold">Meja Café D'Brownies</h2>
         <p class="text-muted">pantau status meja restoran</p>
     </div>
 
