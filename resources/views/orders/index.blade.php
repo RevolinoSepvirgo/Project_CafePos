@@ -82,6 +82,7 @@
                                 </td>
                                 <td>Rp {{ number_format($order->items->sum('subtotal'), 0, ',', '.') }}</td>
                                 <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
+
                                 <td>
                                     <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-info">Detail</a>
                                 </td>
@@ -93,6 +94,8 @@
                         @endforelse
                     </tbody>
                 </table>
+                {{ $ordersDibayar->links() }}
+
             </div>
         </div>
     </div>

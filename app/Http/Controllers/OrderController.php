@@ -25,7 +25,7 @@ class OrderController extends Controller
     $ordersDibayar = \App\Models\Order::with('table', 'user', 'items.menu')
         ->where('status', 'dibayar')
         ->orderBy('created_at', 'desc')
-        ->get();
+        ->paginate(20, ['*'], 'dibayar_page');
 
     return view('orders.index', compact('ordersMenunggu', 'ordersDibayar'));
     }
@@ -116,7 +116,7 @@ public function update(Request $request, $id)
         'table_id' => $request->table_id,
         'customer_name' => $request->customer_name,
     ]);
-    
+
  // Jika meja berubah, update status meja lama & baru
     if ($oldTableId != $request->table_id) {
         // Meja lama jadi kosong

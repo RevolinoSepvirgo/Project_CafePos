@@ -9,12 +9,16 @@ use App\Http\Middleware\RoleAdmin;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Auth;
 
 // AUTH
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');
 
 
 // PUBLIC
