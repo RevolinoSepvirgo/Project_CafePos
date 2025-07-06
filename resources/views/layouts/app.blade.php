@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>CafePOS</title>
@@ -15,6 +16,7 @@
             background: #f1f3f5;
             margin: 0;
         }
+
         .sidebar {
             position: fixed;
             top: 0;
@@ -29,6 +31,7 @@
             display: flex;
             flex-direction: column;
         }
+
         .sidebar .nav-link {
             color: #adb5bd;
             font-weight: 500;
@@ -36,18 +39,22 @@
             margin-bottom: 5px;
             transition: all 0.2s;
         }
+
         .sidebar .nav-link.active,
         .sidebar .nav-link:hover {
             background: #ffc107;
             color: #22252a;
         }
+
         .sidebar-header {
             text-align: center;
             margin-bottom: 1rem;
         }
+
         .logo-wrapper img {
             object-fit: contain;
         }
+
         .account-info {
             margin-top: auto;
             padding: 1rem;
@@ -55,25 +62,29 @@
             text-align: center;
             border-radius: 0.5rem;
         }
+
         .account-info .name {
             font-weight: bold;
         }
+
         .account-info .role {
             color: #ffc107;
             text-transform: capitalize;
         }
+
         main {
             margin-left: 240px;
             padding: 2rem;
         }
-        account-info .bi-person-circle {
-    font-size: 1.2rem;
-    vertical-align: middle;
-    margin-right: 4px;
-}
 
+        account-info .bi-person-circle {
+            font-size: 1.2rem;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- Sidebar -->
@@ -92,22 +103,26 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('menus.index') }}" class="nav-link {{ request()->routeIs('menus.*') ? 'active' : '' }}">
+                <a href="{{ route('menus.index') }}"
+                    class="nav-link {{ request()->routeIs('menus.*') ? 'active' : '' }}">
                     <i class="bi bi-cup-straw"></i> Menu
                 </a>
             </li>
             <li>
-                <a href="{{ route('tables.index') }}" class="nav-link {{ request()->routeIs('tables.*') ? 'active' : '' }}">
+                <a href="{{ route('tables.index') }}"
+                    class="nav-link {{ request()->routeIs('tables.*') ? 'active' : '' }}">
                     <i class="bi bi-table"></i> Meja
                 </a>
             </li>
             <li>
-                <a href="{{ route('orders.index') }}" class="nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
+                <a href="{{ route('orders.index') }}"
+                    class="nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
                     <i class="bi bi-cart"></i> Pesanan
                 </a>
             </li>
             <li>
-                <a href="{{ route('orders.create') }}" class="nav-link {{ request()->is('transactions*') ? 'active' : '' }}">
+                <a href="{{ route('orders.create') }}"
+                    class="nav-link {{ request()->is('transactions*') ? 'active' : '' }}">
                     <i class="bi bi-cash-stack"></i> Transaksi
                 </a>
             </li>
@@ -123,13 +138,13 @@
             </li>
         </ul>
 
-        @if(auth()->check())
+        @if (auth()->check())
             <div class="account-info">
-    <div class="name">
-        <i class="bi bi-person-circle me-1"></i> {{ auth()->user()->name }}
-    </div>
-    <div class="role">{{ auth()->user()->role }}</div>
-</div>
+                <div class="name">
+                    <i class="bi bi-person-circle me-1"></i> {{ auth()->user()->name }}
+                </div>
+                <div class="role">{{ auth()->user()->role }}</div>
+            </div>
         @endif
     </nav>
 
@@ -139,15 +154,16 @@
     </main>
 
     <script>
-      setTimeout(() => {
-        const alert = document.querySelector('.alert');
-        if (alert) {
-          alert.classList.remove('show');
-          alert.classList.add('fade');
-          setTimeout(() => alert.remove(), 300);
-        }
-      }, 3000);
+        setTimeout(() => {
+            const alert = document.querySelector('.alert');
+            if (alert) {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 3000);
     </script>
-        @stack('scripts')
+    @stack('scripts')
 </body>
+
 </html>
