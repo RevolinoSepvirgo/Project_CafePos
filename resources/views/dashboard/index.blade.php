@@ -67,11 +67,14 @@
             </div>
         </div>
 
+
         <!-- Grafik -->
         <div class="bg-white shadow rounded-lg p-6 mb-6">
-            <h2 class="text-md font-semibold text-gray-700 mb-4">📈 Grafik Pesanan 7 Hari Terakhir</h2>
-            <canvas id="ordersChart" height="100"></canvas>
+            <h2 class="text-md font-semibold text-gray-700 mb-4">📊 Grafik Pesanan & Pendaptan 7 Hari Terakhir</h2>
+            <canvas id="combinedChart" height="100"></canvas>
         </div>
+
+
 
         <!-- Pesanan Terbaru -->
         <div class="bg-white shadow-lg rounded-xl p-6">
@@ -116,34 +119,67 @@
         </div>
     @endsection
 
+
+
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            const ctx = document.getElementById('ordersChart').getContext('2d');
-            const chart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: {!! json_encode($ordersPerDay->pluck('date')) !!},
-                    datasets: [{
-                        label: 'Jumlah Pesanan',
-                        backgroundColor: '#3B82F6', // Biru
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        borderWidth: 1,
-                        borderRadius: 6,
-                        data: {!! json_encode($ordersPerDay->pluck('total')) !!}
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
+            document.addEventListener('DOMContentLoaded', function() {
+                const ctx = document.getElementById('combinedChart').getContext('2d');
+                const combinedChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: {!! json_encode($ordersPerDay->pluck('date')) !!}, // Pastikan $ordersPerDay dan $revenuePerDay urut
+                        datasets: [{
+                                label: 'Jumlah Pesanan',
+                                data: {!! json_encode($ordersPerDay->pluck('total')) !!},
+                                backgroundColor: '#3B82F6',
+                                borderRadius: 6,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'Pendapatan (Rp)',
+                                data: {!! json_encode($revenuePerDay->pluck('total')) !!},
+                                backgroundColor: '#10B981',
+                                yAxisID: 'y1',
+                                borderRadius: 6,
+
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                position: 'left',
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Pesanan'
+                                }
+                            },
+                            y1: {
+                                beginAtZero: true,
+                                position: 'right',
+                                title: {
+                                    display: true,
+                                    text: 'Pendapatan (Rp)'
+                                },
+                                grid: {
+                                    drawOnChartArea: false
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return 'Rp ' + value.toLocaleString();
+                                    }
+                                }
                             }
                         }
                     }
-                }
+                });
             });
         </script>
     @endpush

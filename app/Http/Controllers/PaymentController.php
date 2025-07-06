@@ -45,6 +45,8 @@ public function pay(Request $request, $id)
     $order->status = 'dibayar';
     $order->save();
 
+    $order->table->update(['status' => 'kosong']);
+
     return redirect()->route('orders.index')->with('success', 'Pembayaran berhasil!');
 }
 
