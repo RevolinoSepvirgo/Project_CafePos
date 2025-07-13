@@ -105,22 +105,26 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('menus.index') }}" class="nav-link {{ request()->routeIs('menus.*') ? 'active' : '' }}">
+                <a href="{{ route('menus.index') }}"
+                    class="nav-link {{ request()->routeIs('menus.*') ? 'active' : '' }}">
                     <i class="bi bi-cup-straw"></i> Menu
                 </a>
             </li>
             <li>
-                <a href="{{ route('tables.index') }}" class="nav-link {{ request()->routeIs('tables.*') ? 'active' : '' }}">
+                <a href="{{ route('tables.index') }}"
+                    class="nav-link {{ request()->routeIs('tables.*') ? 'active' : '' }}">
                     <i class="bi bi-table"></i> Meja
                 </a>
             </li>
             <li>
-                <a href="{{ route('orders.index') }}" class="nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
+                <a href="{{ route('orders.index') }}"
+                    class="nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
                     <i class="bi bi-cart"></i> Pesanan
                 </a>
             </li>
             <li>
-                <a href="{{ route('orders.create') }}" class="nav-link {{ request()->is('transactions*') ? 'active' : '' }}">
+                <a href="{{ route('orders.create') }}"
+                    class="nav-link {{ request()->is('transactions*') ? 'active' : '' }}">
                     <i class="bi bi-cash-stack"></i> Transaksi
                 </a>
             </li>

@@ -41,7 +41,8 @@
                                 <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
                                 <td>
                                     <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-info">Detail</a>
-                                    <a href="{{ route('orders.payment.form', $order->id) }}" class="btn btn-sm btn-success">Bayar</a>
+                                    <a href="{{ route('orders.payment.form', $order->id) }}"
+                                        class="btn btn-sm btn-success">Bayar</a>
                                 </td>
 
 
