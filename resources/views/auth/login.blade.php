@@ -38,25 +38,28 @@
                     <label for="email" class="form-label">email</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
-                        <input type="text" name="email" id="email" class="form-control" placeholder="Masukkan email">
+                        <input type="text" name="email" id="email" class="form-control"
+                            placeholder="Masukkan email">
                     </div>
                 </div>
                 <div class="mb-4">
                     <label for="password" class="form-label">Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input type="password" name="password" id="password" class="form-control" placeholder="Masukkan password" required>
+                        <input type="password" name="password" id="password" class="form-control"
+                            placeholder="Masukkan password" required>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Login</button>
 
-                 <!-- ⬇ Tambahan tombol kembali -->
-                 <div class="text-center mt-3">
+                <!-- ⬇ Tambahan tombol kembali -->
+                <div class="text-center mt-3">
                     <a href="{{ url('/') }}" class="btn btn-outline-secondary w-100" style="transition: 0.3s;">
                         <i class="fas fa-arrow-left me-2"></i> Kembali ke Beranda
                     </a>
                 </div>
 
-    </div>
+        </div>
 </body>
+
 </html>
