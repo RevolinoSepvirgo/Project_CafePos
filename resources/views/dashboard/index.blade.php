@@ -89,7 +89,7 @@
                         <tr>
                             <th class="px-6 py-3 text-left">ID</th>
                             <th class="px-6 py-3 text-left">Meja</th>
-                            <th class="px-6 py-3 text-left">Kasir</th>
+                            <th class="px-6 py-3 text-left">pengelola</th>
                             <th class="px-6 py-3 text-left">Total</th>
                             <th class="px-6 py-3 text-left">Status</th>
                         </tr>
