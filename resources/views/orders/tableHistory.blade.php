@@ -26,12 +26,19 @@
                     <i class="bi bi-x-circle"></i> Reset
                 </a>
             </div>
+
         </form>
 
         <div class="card shadow-sm border-0">
-            <div class="card-header bg-dark text-white fw-semibold">
-                <i class="bi bi-receipt-cutoff me-1"></i> Daftar Pesanan Dibayar
+            <div class="card-header bg-dark text-white fw-semibold d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-receipt-cutoff me-1"></i> Daftar Pesanan Dibayar</span>
+
+                <a href="{{ route('orders.printHistory', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
+                    target="_blank" class="btn btn-sm btn-light text-dark shadow-sm">
+                    <i class="bi bi-printer"></i> Cetak
+                </a>
             </div>
+
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered align-middle mb-0">
@@ -59,7 +66,8 @@
                                         {{ $order->user->name ?? ($order->user_name ?? 'Pengguna Terhapus') }}
                                     </td>
 
-                                    <td class="text-end">Rp {{ number_format($order->items->sum('subtotal'), 0, ',', '.') }}
+                                    <td class="text-end">Rp
+                                        {{ number_format($order->items->sum('subtotal'), 0, ',', '.') }}
                                     </td>
                                     <td class="text center">
                                         {{ ucfirst($order->payment->method ?? '-') }}

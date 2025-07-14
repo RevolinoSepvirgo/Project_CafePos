@@ -67,7 +67,14 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
     Route::resource('tables', TableController::class)->except(['index']);
 });
 
+Route::middleware(['auth', RoleMiddleware::class . ':kasir,admin'])->group(function () {
+    // ❗❗ Letakkan route khusus DI ATAS
+    Route::get('/orders/print-history', [OrderController::class, 'printHistory'])->name('orders.printHistory');
 
+    // Cetak detail 1 order
+    Route::get('/orders/{id}/payment', [PaymentController::class, 'showPaymentForm'])->name('orders.payment.form');
+    Route::post('/orders/{id}/pay', [PaymentController::class, 'pay'])->name('orders.pay');
+});
 // Orders CRUD (admin, pelayan, kasir)
 Route::middleware(['auth'])->group(function () {
     // Resource route untuk Order (CRUD lengkap)
@@ -79,14 +86,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// Order pay (hanya kasir,admin)
-
-Route::middleware(['auth', RoleMiddleware::class . ':kasir,admin'])->group(function () {
-Route::get('/orders/{id}/payment', [PaymentController::class, 'showPaymentForm'])->name('orders.payment.form');
-Route::post('/orders/{id}/pay', [PaymentController::class, 'pay'])->name('orders.pay');
-
-
-});
 
 
 

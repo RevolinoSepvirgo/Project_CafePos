@@ -179,7 +179,7 @@ class OrderController extends Controller
 
     public function history(Request $request)
     {
-        $query = Order::with('table', 'user', 'items.menu','payment')
+        $query = Order::with('table', 'user', 'items.menu', 'payment')
             ->where('status', 'dibayar');
 
         // Filter berdasarkan tanggal
@@ -205,5 +205,21 @@ class OrderController extends Controller
     {
         $order = Order::with('items.menu', 'table', 'user')->findOrFail($id);
         return view('orders.print', compact('order'));
+    }
+
+    public function printHistory(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $query = Order::with(['table', 'user', 'payment', 'items'])->where('status', 'dibayar');
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+        }
+
+        $orders = $query->orderByDesc('created_at')->get();
+
+        return view('orders.cetak', compact('orders', 'startDate', 'endDate'));
     }
 }
