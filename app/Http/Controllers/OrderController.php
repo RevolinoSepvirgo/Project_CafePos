@@ -176,16 +176,24 @@ public function update(Request $request, $id)
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dihapus.');
     }
 
-    public function history()
+    public function history(Request $request)
 {
-    $orders = Order::with('table', 'user', 'items.menu')
-        ->where('status', 'dibayar')
-        ->orderBy('created_at', 'desc')
-        ->paginate(20);
+    $query = Order::with('table', 'user', 'items.menu')
+        ->where('status', 'dibayar');
+
+    // Filter berdasarkan tanggal
+    if ($request->filled('start_date')) {
+        $query->whereDate('created_at', '>=', $request->start_date);
+    }
+
+    if ($request->filled('end_date')) {
+        $query->whereDate('created_at', '<=', $request->end_date);
+    }
+
+    $orders = $query->orderBy('created_at', 'desc')->paginate(20);
 
     return view('orders.tableHistory', compact('orders'));
 }
-
 public function showHistory($id)
 {
     $order = Order::with('items.menu', 'table', 'user')->findOrFail($id);
@@ -195,7 +203,7 @@ public function showHistory($id)
 public function print($id)
 {
     $order = Order::with('items.menu', 'table', 'user')->findOrFail($id);
-    return view('orders.print', compact('order')); 
+    return view('orders.print', compact('order'));
 }
 
 

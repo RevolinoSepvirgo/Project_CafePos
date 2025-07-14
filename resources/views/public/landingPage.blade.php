@@ -157,17 +157,18 @@
                 <div class="col-md-4 col-sm-4 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-body colorfullPanel text-center">
-                            <h3>Pengalaman Baru</h3>
+                            <h3>Siap Melayani</h3>
                             <h2>
-                                <span>Event</span> Menarik
+                                <span>Buka</span> 24 Jam
                                 <img class="classic" src="{{ asset('aset/new/icon.png') }}" />
                             </h2>
                             <p>
-                                bermacam macam event dan acara yang menarik selalu menanti anda
+                                Kami selalu siap melayani Anda kapan saja, setiap hari tanpa henti.
                             </p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -201,7 +202,7 @@
                             <div class="text-center">
                                 <span style="color:white;">Pemesanan cepat dan mudah</span>
                                 <p>
-                                    Minkop menawarkan kemudahan dalam pemesanan, sehingga Anda bisa langsung menikmati
+                                    D'Brownies menawarkan kemudahan dalam pemesanan, sehingga Anda bisa langsung menikmati
                                     kopi favorit tanpa
                                     perlu menunggu lama.
                                 </p>
@@ -218,7 +219,7 @@
                             <div class="text-center">
                                 <span style="color:white;">Harga terjangkau,transaksi aman</span>
                                 <p>
-                                    Dengan harga yang bersahabat, Minkop memastikan setiap transaksi dilakukan dengan
+                                    Dengan harga yang bersahabat, D'Browies memastikan setiap transaksi dilakukan dengan
                                     transparansi dan
                                     kepercayaan, memberikan nilai lebih bagi setiap pelanggan.
                                 </p>
