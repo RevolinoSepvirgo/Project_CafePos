@@ -14,7 +14,7 @@ use App\Models\Payment;
 
 class OrderController extends Controller
 {
-    // Tampilkan semua pesanan (khusus kasir)
+    
     public function index()
     {
        $ordersMenunggu = \App\Models\Order::with('table', 'user', 'items.menu')
