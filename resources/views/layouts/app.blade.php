@@ -122,19 +122,27 @@
                     class="nav-link {{ request()->routeIs('tables.*') ? 'active' : '' }}">
                     <i class="bi bi-table"></i> Meja
                 </a>
-            
-              <li>
+            </li>
+
+            <li>
                 <a href="{{ route('menus.index') }}"
                     class="nav-link {{ request()->routeIs('menus.*') ? 'active' : '' }}">
                     <i class="bi bi-cup-straw"></i> Menu
                 </a>
             </li>
             </li>
-            <li>
-                <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
-                    <i class="bi bi-people"></i> Pengguna
-                </a>
-            </li>
+            @auth
+                @if (auth()->user()->role === 'admin')
+                    <li>
+                        <a href="{{ route('users.index') }}"
+                            class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
+                            <i class="bi bi-people"></i> Pengguna
+                        </a>
+                    </li>
+                @endif
+            @endauth
+
+
         </ul>
 
         @if (auth()->check())

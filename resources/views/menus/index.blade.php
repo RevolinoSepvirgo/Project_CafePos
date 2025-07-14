@@ -3,11 +3,22 @@
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>Data Menu</h4>
-            <a href="{{ route('menus.create') }}" class="btn btn-success btn-sm">
-                <i class="bi bi-plus-circle"></i> Tambah Menu
-            </a>
+            <div class="flex-grow-1 text-center">
+                <h4 class="fw-bold mb-0 text-dark">📅Data Menu</h4>
+            </div>
+
+            @auth
+                @if (auth()->user()->role === 'admin')
+                    <div class="ms-3">
+                        <a href="{{ route('menus.create') }}" class="btn btn-success btn-sm">
+                            <i class="bi bi-plus-circle"></i> Tambah Menu
+                        </a>
+                    </div>
+                @endif
+            @endauth
         </div>
+
+
 
         @foreach ($categories as $category)
             <div class="card shadow mb-4">
@@ -23,7 +34,11 @@
                                     <th>Nama</th>
                                     <th class="text-end pe-5">Harga</th>
                                     <th class="ps-4" style="min-width: 90px;">Gambar</th>
-                                    <th class="text-center" style="width: 140px;">Aksi</th>
+                                    @auth
+                                        @if (auth()->user()->role === 'admin')
+                                            <th class="text-center" style="width: 140px;">Aksi</th>
+                                        @endif
+                                    @endauth
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,20 +55,25 @@
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </td>
-                                        <td class="text-center">
-                                            <a href="{{ route('menus.edit', $menu->id) }}" class="btn btn-warning btn-sm">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            <form action="{{ route('menus.destroy', $menu->id) }}" method="POST"
-                                                class="d-inline"
-                                                onsubmit="return confirm('Yakin ingin menghapus menu ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-sm">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
+                                        @auth
+                                            @if (auth()->user()->role === 'admin')
+                                                <td class="text-center">
+                                                    <a href="{{ route('menus.edit', $menu->id) }}"
+                                                        class="btn btn-warning btn-sm">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                    <form action="{{ route('menus.destroy', $menu->id) }}" method="POST"
+                                                        class="d-inline"
+                                                        onsubmit="return confirm('Yakin ingin menghapus menu ini?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger btn-sm">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            @endif
+                                        @endauth
                                     </tr>
                                 @empty
                                     <tr>
@@ -69,3 +89,9 @@
         @endforeach
     </div>
 @endsection
+<style>
+    h4.fw-bold {
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+</style>

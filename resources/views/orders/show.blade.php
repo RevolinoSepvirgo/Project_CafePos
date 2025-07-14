@@ -64,6 +64,7 @@
                     </a>
 
                     @if ($order->status === 'menunggu')
+                    
                         <a href="{{ route('orders.payment.form', $order->id) }}" class="btn btn-success">
                             💳 Bayar Sekarang
                         </a>

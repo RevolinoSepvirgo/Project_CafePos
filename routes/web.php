@@ -34,13 +34,15 @@ Route::get('/meja-publik', [TableController::class, 'publicIndex'])->name('table
 // DASHBOARD
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
+// daftar menu dapat diakses semua yang login
+Route::get('/menus', [MenuController::class, 'index'])->middleware('auth')->name('menus.index');
 
 
 // USERS (admin)
 Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
 
     // CRUD menus
-    Route::resource('menus', MenuController::class);
+    Route::resource('menus', MenuController::class)->except(['index']);
 
     // CRUD Users
     Route::resource('users', UserController::class);
@@ -57,17 +59,12 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-// MEJA (Tables)
+// Halaman daftar meja dapat diakses semua yang login
 Route::get('/tables', [TableController::class, 'index'])->middleware('auth')->name('tables.index');
 
+// CRUD Meja hanya bisa diakses admin
 Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
-    Route::get('/tables/create', [TableController::class, 'create'])->name('tables.create');
-    Route::post('/tables', [TableController::class, 'store'])->name('tables.store');
-    Route::get('/tables/{table}/edit', [TableController::class, 'edit'])->name('tables.edit');
-    Route::put('/tables/{table}', [TableController::class, 'update'])->name('tables.update');
-    Route::delete('/tables/{table}', [TableController::class, 'destroy'])->name('tables.destroy');
-    Route::get('/tables/{table}', [TableController::class, 'show'])->name('tables.show');
-
+    Route::resource('tables', TableController::class)->except(['index']);
 });
 
 

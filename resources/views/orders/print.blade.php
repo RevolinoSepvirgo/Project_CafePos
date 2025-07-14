@@ -5,11 +5,12 @@
     <title>Struk Pesanan</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
             color: #000;
             width: 80mm;
             margin: auto;
+            background: #fff;
         }
 
         .header, .footer {
@@ -18,6 +19,7 @@
 
         h2 {
             margin: 0;
+            font-size: 18px;
         }
 
         .line {
@@ -46,6 +48,26 @@
             text-align: left;
         }
 
+        .bold {
+            font-weight: bold;
+        }
+
+        .double-line {
+            border-top: 2px solid #000;
+            margin: 8px 0;
+        }
+
+        .total-box {
+            padding-top: 4px;
+            border-top: 1px dashed #000;
+            margin-top: 5px;
+        }
+
+        .footer small {
+            display: block;
+            margin-top: 3px;
+        }
+
         @media print {
             .no-print {
                 display: none;
@@ -56,9 +78,10 @@
 <body onload="window.print()">
 
     <div class="header">
-        <h2>CafePOS</h2>
-        <small>Jl. Contoh No.123, Kota Contoh</small><br>
-        <small>Telp: 0812-XXXX-XXXX</small>
+        <h2>D'Brownies</h2>
+        <small>Jl. Gadut No.123, Kota Padang</small><br
+        <small>Telp: +62 851-7320-2332</small><br>
+        <small>Ig: @d.brownies</small>
     </div>
 
     <div class="line"></div>
@@ -112,8 +135,8 @@
 
     <table>
         <tr>
-            <td class="text-left"><strong>Total Belanja</strong></td>
-            <td class="text-end"><strong>Rp {{ number_format($total, 0, ',', '.') }}</strong></td>
+            <td class="text-left bold">Total Belanja</td>
+            <td class="text-end bold">Rp {{ number_format($total, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <td class="text-left">Jumlah Dibayar</td>
@@ -129,10 +152,12 @@
         </tr>
     </table>
 
-    <div class="line"></div>
+    <div class="double-line"></div>
 
     <div class="footer">
-        <p>Terima kasih atas kunjungannya!</p>
+        <p><strong>Terima Kasih</strong></p>
+        <small>~ D'Brownies ~</small>
+        <small>Silakan datang kembali!</small>
     </div>
 
 </body>
