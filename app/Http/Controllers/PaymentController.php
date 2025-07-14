@@ -10,45 +10,51 @@ use Illuminate\Support\Facades\Auth;
 class PaymentController extends Controller
 {
     public function showPaymentForm($id)
-{
-    $order = Order::with('items.menu', 'table')->findOrFail($id);
+    {
+        $order = Order::with('items.menu', 'table')->findOrFail($id);
 
-    if ($order->status === 'dibayar') {
-        return redirect()->route('orders.show', $id)->with('success', 'Pesanan sudah dibayar.');
+        if ($order->status === 'dibayar') {
+            return redirect()->route('orders.show', $id)->with('success', 'Pesanan sudah dibayar.');
+        }
+
+        return view('orders.payments', compact('order'));
     }
-
-    return view('orders.payments', compact('order'));
-}
 
     /**
      * Handle the payment for an order.
      */
 
-public function pay(Request $request, $id)
-{
-    $order = Order::with('items')->findOrFail($id);
-    $total = $order->items->sum('subtotal');
+    public function pay(Request $request, $id)
+    {
+        $order = Order::with('items', 'table')->findOrFail($id);
+        $total = $order->items->sum('subtotal');
 
-    $request->validate([
-        'amount' => ['required', 'numeric', 'min:' . $total],
-    ]);
+        $request->validate([
+            'amount' => ['required', 'numeric', 'min:' . $total],
+            'payment_method' => ['required', 'in:tunai,qris,debit,kredit'],
+        ]);
 
-    // Simpan pembayaran
-    $payment = new Payment();
-    $payment->order_id = $order->id;
-    $payment->amount = $request->amount;
-    $payment->method = 'Tunai'; // default atau bisa dari input
-    $payment->user_id = Auth::id();
-    $payment->save();
+        $amount = $request->amount;
+        $change = $amount - $total;
 
-    // Update status pesanan
-    $order->status = 'dibayar';
-    $order->save();
+        // Simpan data pembayaran
+        $payment = new Payment();
+        $payment->order_id = $order->id;
+        $payment->amount = $request->amount;
+        $payment->change = $request->amount - $total;
+        $payment->method = $request->payment_method;
+        $payment->user_id = Auth::id();
+        $payment->save();
 
-    $order->table->update(['status' => 'kosong']);
+        // Update status pesanan dan meja
+        $order->status = 'dibayar';
+        $order->save();
 
-    return redirect()->route('orders.index')->with('success', 'Pembayaran berhasil!');
-}
+        $order->table->update(['status' => 'kosong']);
+
+        return redirect()->route('orders.index')->with('success', 'Pembayaran berhasil!');
+    }
+
 
 
 

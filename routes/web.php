@@ -34,30 +34,31 @@ Route::get('/meja-publik', [TableController::class, 'publicIndex'])->name('table
 // DASHBOARD
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
-// menus (admin)
 
-Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
-    Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
-    Route::get('/menus/create', [MenuController::class, 'create'])->name('menus.create');
-    Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');
-    Route::get('/menus/{menu}/edit', [MenuController::class, 'edit'])->name('menus.edit');
-    Route::put('/menus/{menu}', [MenuController::class, 'update'])->name('menus.update');
-    Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menus.destroy');
-});
 
 // USERS (admin)
 Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [   UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-}); // show user profile
+
+    // CRUD menus
+    Route::resource('menus', MenuController::class);
+
+    // CRUD Users
+    Route::resource('users', UserController::class);
+
+    // Riwayat Pesanan
+    Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
+});
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/orders/history/{order}', [OrderController::class, 'showHistory'])->name('orders.showHistory');
+    Route::get('/orders/{order}/print', [OrderController::class, 'print'])->name('orders.print');
+
+
+});
 
 // MEJA (Tables)
-Route::get('/tables', [TableController::class, 'index'])->name('tables.index');
+Route::get('/tables', [TableController::class, 'index'])->middleware('auth')->name('tables.index');
 
 Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
     Route::get('/tables/create', [TableController::class, 'create'])->name('tables.create');
@@ -71,17 +72,13 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function ()
 
 
 // Orders CRUD (admin, pelayan, kasir)
+Route::middleware(['auth'])->group(function () {
+    // Resource route untuk Order (CRUD lengkap)
+    Route::resource('orders', OrderController::class);
 
-Route::middleware(['auth', RoleMiddleware::class . ':admin,pelayan,kasir'])->group(function () {
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
-    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-    Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
-    Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
-    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
-// status meja
-     Route::put('/tables/{table}/change-status', [TableController::class, 'changeStatus'])->name('tables.changeStatus');
+    // Ubah status meja
+    Route::put('/tables/{table}/change-status', [TableController::class, 'changeStatus'])
+        ->name('tables.changeStatus');
 });
 
 
@@ -93,16 +90,6 @@ Route::post('/orders/{id}/pay', [PaymentController::class, 'pay'])->name('orders
 
 
 });
-
-
-
-    // // ADMIN: CRUD Menu dan Meja
-
-
-// Route::middleware(['auth', 'role:admin'])->group(function () {
-//     Route::resource('menus', MenuController::class);
-//     Route::resource('tables', TableController::class);
-// });
 
 
 

@@ -42,10 +42,21 @@
         </table>
 
         @if ($order->status != 'dibayar')
-            <form action="{{ route('orders.pay', $order->id) }}" method="POST">
+            <form id="payment-form" action="{{ route('orders.pay', $order->id) }}" method="POST">
                 @csrf
-
                 <input type="hidden" name="total" id="total" value="{{ $total }}">
+                <input type="hidden" name="change" id="change_hidden">
+
+                <div class="mb-3">
+                    <label for="payment_method" class="form-label">Metode Pembayaran</label>
+                    <select name="payment_method" id="payment_method" class="form-select" required>
+                        <option value="">Pilih Metode</option>
+                        <option value="tunai">Tunai</option>
+                        <option value="qris">QRIS</option>
+                        <option value="debit">Debit</option>
+                        <option value="kredit">Kartu Kredit</option>
+                    </select>
+                </div>
 
                 <div class="mb-3">
                     <label for="amount" class="form-label">Jumlah Dibayar</label>
@@ -62,21 +73,69 @@
             </form>
         @else
             <div class="alert alert-success">Pesanan sudah dibayar.</div>
+            <a href="{{ route('orders.print', $order->id) }}" target="_blank" class="btn btn-primary">
+                <i class="bi bi-printer"></i> Cetak Struk
+            </a>
             <a href="{{ route('orders.index') }}" class="btn btn-secondary">Kembali</a>
         @endif
     </div>
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const amountInput = document.getElementById('amount');
         const changeInput = document.getElementById('change');
-        const total = parseInt(document.getElementById('total').value);
+        const changeHidden = document.getElementById('change_hidden');
+        const total = parseInt(document.getElementById('total')?.value ?? 0);
 
-        amountInput.addEventListener('input', function() {
-            const bayar = parseInt(this.value) || 0;
-            const kembalian = bayar - total;
-            changeInput.value = kembalian >= 0 ? 'Rp ' + kembalian.toLocaleString('id-ID') : 'Rp 0';
+        if (amountInput) {
+            amountInput.addEventListener('input', function () {
+                const bayar = parseInt(this.value) || 0;
+                const kembalian = bayar - total;
+                const formatted = kembalian >= 0 ? 'Rp ' + kembalian.toLocaleString('id-ID') : 'Rp 0';
+                changeInput.value = formatted;
+                changeHidden.value = kembalian >= 0 ? kembalian : 0;
+            });
+        }
+
+       const form = document.getElementById('payment-form');
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Cegah submit default
+
+            Swal.fire({
+                title: 'Pembayaran berhasil!',
+                text: "Apakah Anda ingin mencetak struk?",
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Cetak Struk',
+                cancelButtonText: 'Tidak',
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+            }).then((result) => {
+                // Kirim form via AJAX
+                const formData = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    },
+                    body: formData
+                }).then(response => {
+                    if (result.isConfirmed) {
+                        // Jika ingin cetak struk
+                        window.location.href = "{{ route('orders.print', $order->id) }}";
+                    } else {
+                        // Jika tidak
+                        window.location.href = "{{ route('orders.index') }}";
+                    }
+                }).catch(error => {
+                    Swal.fire('Gagal', 'Terjadi kesalahan saat menyimpan pembayaran.', 'error');
+                    console.error(error);
+                });
+            });
         });
+    }
     </script>
 @endpush

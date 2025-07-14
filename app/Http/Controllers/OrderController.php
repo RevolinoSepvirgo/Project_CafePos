@@ -8,13 +8,15 @@ use App\Models\OrderItem;
 use App\Models\Menu;
 use App\Models\Table;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 use App\Models\Payment;
 
 
 
 class OrderController extends Controller
 {
-    
+
     public function index()
     {
        $ordersMenunggu = \App\Models\Order::with('table', 'user', 'items.menu')
@@ -22,8 +24,11 @@ class OrderController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
+        $today = Carbon::today();
+
     $ordersDibayar = \App\Models\Order::with('table', 'user', 'items.menu')
         ->where('status', 'dibayar')
+        ->whereDate('created_at', $today)
         ->orderBy('created_at', 'desc')
         ->paginate(20, ['*'], 'dibayar_page');
 
@@ -170,6 +175,28 @@ public function update(Request $request, $id)
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dihapus.');
     }
+
+    public function history()
+{
+    $orders = Order::with('table', 'user', 'items.menu')
+        ->where('status', 'dibayar')
+        ->orderBy('created_at', 'desc')
+        ->paginate(20);
+
+    return view('orders.tableHistory', compact('orders'));
+}
+
+public function showHistory($id)
+{
+    $order = Order::with('items.menu', 'table', 'user')->findOrFail($id);
+    return view('orders.history-detail', compact('order'));
+}
+
+public function print($id)
+{
+    $order = Order::with('items.menu', 'table', 'user')->findOrFail($id);
+    return view('orders.print', compact('order')); 
+}
 
 
 

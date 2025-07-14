@@ -13,6 +13,7 @@ class Payment extends Model
         'user_id',
         'method',
         'amount',
+        'change', // Added for change amount
     ];
 
     public function order()
