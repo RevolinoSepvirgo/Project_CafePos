@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="card shadow">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0"><i class="bi bi-people-fill me-1"></i> Daftar Pengguna</h5>
             <a href="{{ route('users.create') }}" class="btn btn-light btn-sm">
                 <i class="bi bi-person-plus"></i> Tambah User

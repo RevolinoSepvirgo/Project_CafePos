@@ -12,9 +12,9 @@
             font-weight: bold;
             font-size: 1.4rem;
             margin: 40px 0 20px;
-            border-bottom: 3px solid #dc3545;
+            border-bottom: 3px solid #0b0a0a;
             padding-bottom: 8px;
-            color: #dc3545;
+            color: #0a0909;
         }
 
         .menu-card {
@@ -127,7 +127,7 @@
         }
 
         .category-btn.active {
-            background-color: #dc3545;
+            background-color: #2b2a2a;
             color: #fff;
         }
 

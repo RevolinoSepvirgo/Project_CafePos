@@ -105,29 +105,28 @@
                 </a>
             </li>
 
-            <li>
-                <a href="{{ route('orders.index') }}"
-                    class="nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
-                    <i class="bi bi-cart"></i> Pesanan
-                </a>
-            </li>
+            <a href="{{ route('orders.index') }}"
+                class="nav-link {{ request()->routeIs('orders.index') ? 'active' : '' }}">
+                <i class="bi bi-receipt-cutoff"></i> List Orders
+            </a>
+
             <li>
                 <a href="{{ route('orders.create') }}"
-                    class="nav-link {{ request()->is('transactions*') ? 'active' : '' }}">
+                    class="nav-link {{ request()->routeIs('orders.create') ? 'active' : '' }}">
                     <i class="bi bi-cash-stack"></i> Transaksi
                 </a>
             </li>
             <li>
                 <a href="{{ route('tables.index') }}"
                     class="nav-link {{ request()->routeIs('tables.*') ? 'active' : '' }}">
-                    <i class="bi bi-table"></i> Meja
+                    <i class="bi bi-table"></i> Daftar Meja
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('menus.index') }}"
                     class="nav-link {{ request()->routeIs('menus.*') ? 'active' : '' }}">
-                    <i class="bi bi-cup-straw"></i> Menu
+                    <i class="bi bi-journal-text"></i>  Daftar Menu
                 </a>
             </li>
             </li>
@@ -136,7 +135,7 @@
                     <li>
                         <a href="{{ route('users.index') }}"
                             class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
-                            <i class="bi bi-people"></i> Pengguna
+                            <i class="bi bi-people"></i> Users
                         </a>
                     </li>
                 @endif

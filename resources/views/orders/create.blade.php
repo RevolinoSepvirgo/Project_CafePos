@@ -5,7 +5,7 @@
 @section('content')
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #f1f1f1;
         }
 
         h4, h5 {
@@ -13,41 +13,36 @@
         }
 
         .category-btn.active {
-            background-color: #0d6efd;
+            background-color: #070808;
             color: #fff;
         }
 
         .menu-card {
             background: #fff;
-            border: 1px solid #dee2e6;
-            border-radius: 12px;
-            padding: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .menu-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
+            background-color: #f8f9fa;
+            transform: scale(1.02);
         }
 
         .order-panel {
-            background: #ffffff;
-            border: 1px solid #dee2e6;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .order-panel h5 {
-            font-weight: bold;
-            margin-bottom: 15px;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .order-item {
-            border-bottom: 1px solid #dee2e6;
-            padding: 8px 0;
+            border-bottom: 1px dashed #ced4da;
+            padding: 6px 0;
         }
 
         .order-summary {
@@ -56,101 +51,93 @@
         }
 
         .input-group-text {
-            background-color: #fff;
+            background-color: #f8f9fa;
         }
 
-        .btn-outline-dark {
+        .btn-outline-secondary {
             font-size: 0.9rem;
         }
 
-        .btn-dark {
+        .btn-success {
             font-weight: bold;
             letter-spacing: 0.5px;
         }
 
         select.form-select,
         input.form-control {
-            border-radius: 10px;
+            border-radius: 6px;
         }
 
-        @media (max-width: 767px) {
-            .menu-card {
-                padding: 12px;
-            }
-
-            .order-panel {
-                margin-top: 20px;
-            }
+        .text-muted {
+            font-size: 0.9rem;
         }
     </style>
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-3">
         <form method="POST" action="{{ route('orders.store') }}">
             @csrf
             <div class="row">
-                <!-- Kiri: Menu -->
+                <!-- Menu -->
                 <div class="col-md-8">
-                    <h4 class="mb-3">📚 Daftar Menu</h4>
+                    <h4 class="mb-3 text-dark"><i class="bi bi-journal-text me-2"></i>Menu Tersedia</h4>
 
                     <div class="input-group mb-3">
-                        <span class="input-group-text">🔍</span>
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
                         <input type="text" class="form-control" placeholder="Cari menu..." id="searchInput">
                     </div>
 
                     <div class="mb-3">
-                        <button type="button" class="btn btn-sm btn-light category-btn active"
-                            onclick="filterMenu('all')">Semua</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary category-btn active" onclick="filterMenu('all')">Semua</button>
                         @php $kategoriUnik = $menus->pluck('category.name')->unique()->filter(); @endphp
                         @foreach ($kategoriUnik as $cat)
-                            <button type="button" class="btn btn-sm btn-light category-btn"
-                                onclick="filterMenu('{{ strtolower($cat) }}')">{{ $cat }}</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary category-btn" onclick="filterMenu('{{ strtolower($cat) }}')">{{ $cat }}</button>
                         @endforeach
                     </div>
 
                     <div class="row g-3" id="menu-list">
                         @foreach ($menus as $menu)
-                            <div class="col-md-4 menu-card-wrapper"
-                                data-category="{{ strtolower($menu->category->name ?? 'lainnya') }}">
-                                <div class="menu-card"
-                                    onclick="addToOrder({{ $menu->id }}, '{{ $menu->name }}', {{ $menu->price }})">
+                            <div class="col-md-4 menu-card-wrapper" data-category="{{ strtolower($menu->category->name ?? 'lainnya') }}">
+                                <div class="menu-card" onclick="addToOrder({{ $menu->id }}, '{{ $menu->name }}', {{ $menu->price }})">
                                     <div class="fw-bold">{{ $menu->name }}</div>
                                     <div class="text-muted">{{ $menu->category->name ?? 'Tanpa Kategori' }}</div>
-                                    <div class="text-danger fw-semibold">Rp{{ number_format($menu->price, 0, ',', '.') }}</div>
+                                    <div class="text-success fw-semibold">Rp{{ number_format($menu->price, 0, ',', '.') }}</div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
 
-                <!-- Kanan: Panel Pesanan -->
+                <!-- Order Panel -->
                 <div class="col-md-4 mt-4 mt-md-0">
                     <div class="order-panel">
-                        <h5>🧾 Order Baru</h5>
-                        <div class="mb-2">
+                        <h5 class="mb-3"><i class="bi bi-clipboard-plus me-2"></i>Pesanan Pelanggan</h5>
+
+                        <div class="mb-3">
                             <label class="form-label">Nama Pelanggan</label>
-                            <input type="text" class="form-control" name="customer_name" placeholder="Nama pelanggan" required>
+                            <input type="text" class="form-control" name="customer_name" placeholder="" required>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label">Nomor Meja</label>
                             <select class="form-select" name="table_id" required>
-                                <option value="">Pilih meja</option>
+                                <option value="">Pilih Meja</option>
                                 @foreach ($tables as $table)
                                     <option value="{{ $table->id }}">{{ $table->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div id="order-list" class="mb-3 text-center text-muted">
-                            Belum ada pesanan
+                        <div id="order-list" class="mb-3 text-muted text-center">
+                            Belum ada item pesanan.
                         </div>
 
                         <div id="order-items-container"></div>
 
                         <div class="order-summary mb-3">
-                            Total Pesanan: <span id="totalHarga">Rp0</span>
+                            Total: <span id="totalHarga">Rp0</span>
                         </div>
 
-                        <button class="btn btn-dark w-100">🚀 Proses Pesanan</button>
+                        <button class="btn btn-success w-100"><i class="bi bi-send-check me-1"></i> Proses Pesanan</button>
                     </div>
                 </div>
             </div>
@@ -190,7 +177,7 @@
             const totalEl = document.getElementById('totalHarga');
 
             if (order.length === 0) {
-                list.innerHTML = '<div class="text-center text-muted">Belum ada pesanan</div>';
+                list.innerHTML = '<div class="text-muted text-center">Belum ada item pesanan.</div>';
                 container.innerHTML = '';
                 totalEl.textContent = 'Rp0';
                 return;
@@ -205,12 +192,12 @@
                 const subtotal = item.qty * item.harga;
                 total += subtotal;
 
-                html += `<div class='order-item d-flex justify-content-between align-items-center mb-1'>
-                    <div class='flex-grow-1'>${item.nama}</div>
+                html += `<div class='order-item d-flex justify-content-between align-items-center'>
+                    <div>${item.nama}</div>
                     <div class='d-flex align-items-center'>
-                        <button type='button' class='btn btn-sm btn-outline-dark me-1' onclick='decreaseQty(${index})'>-</button>
+                        <button type='button' class='btn btn-sm btn-outline-secondary me-1' onclick='decreaseQty(${index})'>-</button>
                         <span>${item.qty}</span>
-                        <button type='button' class='btn btn-sm btn-outline-dark ms-1' onclick='increaseQty(${index})'>+</button>
+                        <button type='button' class='btn btn-sm btn-outline-secondary ms-1' onclick='increaseQty(${index})'>+</button>
                     </div>
                     <div class='ms-3'>Rp${subtotal.toLocaleString('id-ID')}</div>
                 </div>`;

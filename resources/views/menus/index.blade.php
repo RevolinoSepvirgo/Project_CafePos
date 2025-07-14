@@ -23,7 +23,7 @@
         @foreach ($categories as $category)
             <div class="card shadow mb-4">
                 <div class="card-header bg-success text-white fw-bold">
-                    Kategori: {{ $category->name }}
+                    {{ $category->name }}
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">

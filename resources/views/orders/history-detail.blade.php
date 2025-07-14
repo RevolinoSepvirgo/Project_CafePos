@@ -72,6 +72,9 @@
                 <span class="badge bg-success">{{ ucfirst($order->status) }}</span>
             </p>
             <p><strong>Tanggal & Waktu:</strong> {{ $order->created_at->format('d-m-Y H:i') }}</p>
+            @if($order->payment)
+            <p><strong>Metode Pembayaran:</strong> {{ ucfirst($order->payment->method) }}</p>
+            @endif
         </div>
     </div>
 
@@ -79,7 +82,7 @@
         <div class="card-header fw-bold bg-light">Rincian Pesanan</div>
         <div class="card-body p-0">
             <table class="table table-bordered mb-0">
-                <thead>
+                <thead class="text-center">
                     <tr>
                         <th>Menu</th>
                         <th>Harga</th>
