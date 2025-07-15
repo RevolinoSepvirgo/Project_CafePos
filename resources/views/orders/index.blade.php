@@ -13,7 +13,7 @@
         {{-- Tombol Aksi --}}
         <div class="row align-items-center mb-4">
             <div class="col-md-6 text-start">
-                <a href="{{ route('orders.create') }}" class="btn btn-success rounded-pill px-4 shadow-sm">
+                <a href="{{ route('orders.create') }}" class="btn btn-dark rounded-pill px-4 shadow-sm">
                     <i class="bi bi-plus-circle me-2"></i> Buat Pesanan
                 </a>
             </div>

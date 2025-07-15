@@ -10,7 +10,7 @@
             @auth
                 @if (auth()->user()->role === 'admin')
                     <div class="ms-3">
-                        <a href="{{ route('menus.create') }}" class="btn btn-success btn-sm">
+                        <a href="{{ route('menus.create') }}" class="btn btn-dark btn-sm">
                             <i class="bi bi-plus-circle"></i> Tambah Menu
                         </a>
                     </div>

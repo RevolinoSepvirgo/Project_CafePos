@@ -6,7 +6,7 @@
             Data Meja
             @auth
                 @if (auth()->user()->role === 'admin')
-                    <a href="{{ route('tables.create') }}" class="btn btn-light btn-sm float-end">
+                    <a href="{{ route('tables.create') }}" class="btn btn-dark btn-sm float-end">
                         <i class="bi bi-plus-circle"></i> Tambah Meja
                     </a>
                 @endif

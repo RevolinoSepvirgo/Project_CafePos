@@ -55,8 +55,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/orders/history/{order}', [OrderController::class, 'showHistory'])->name('orders.showHistory');
     Route::get('/orders/{order}/print', [OrderController::class, 'print'])->name('orders.print');
-
-
 });
 
 // Halaman daftar meja dapat diakses semua yang login
@@ -84,9 +82,3 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/tables/{table}/change-status', [TableController::class, 'changeStatus'])
         ->name('tables.changeStatus');
 });
-
-
-
-
-
-
